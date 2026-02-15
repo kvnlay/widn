@@ -68,10 +68,16 @@
     "tailwindcss": "^3.4.17",
     "typescript": "5.7.3"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.7",
-      "@types/react-dom": "19.2.3"
+  "overrides": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "react-day-picker": {
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
+  },
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
   }
 }
