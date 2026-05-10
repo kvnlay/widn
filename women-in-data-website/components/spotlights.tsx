@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Quote } from "lucide-react";
+import { isStrapiCmsEnabled, resolveMediaUrl } from "@/lib/cms";
+import { staticSpotlights } from "@/lib/static-site-content";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
@@ -69,7 +71,9 @@ async function getSpotlights(): Promise<SpotlightEntry[]> {
 }
 
 export async function Spotlights() {
-  const spotlights = await getSpotlights();
+  const spotlights = isStrapiCmsEnabled()
+    ? await getSpotlights()
+    : staticSpotlights;
 
   return (
     <section id="spotlights" className="py-24 lg:py-32 bg-card">
@@ -95,9 +99,8 @@ export async function Spotlights() {
           <div className="mt-16 grid gap-8 md:grid-cols-3">
             {spotlights.map((person) => {
               const imageData = person.image?.data?.[0];
-              const imageUrl = imageData?.url ?? imageData?.attributes?.url
-                ? `${STRAPI_URL}${imageData.url ?? imageData.attributes?.url}`
-                : "/placeholder.svg";
+              const rawUrl = imageData?.url ?? imageData?.attributes?.url;
+              const imageUrl = resolveMediaUrl(rawUrl);
               const quote = quoteFromBlocks(person.quote);
 
               return (

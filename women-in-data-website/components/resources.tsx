@@ -6,6 +6,8 @@ import {
   Headphones,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { isStrapiCmsEnabled } from "@/lib/cms";
+import { staticResources } from "@/lib/static-site-content";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
@@ -84,7 +86,8 @@ async function getResources(): Promise<ResourceEntry[]> {
 }
 
 export async function Resources() {
-  const resources = await getResources();
+  const strapiOn = isStrapiCmsEnabled();
+  const resources = strapiOn ? await getResources() : staticResources;
 
   return (
     <section id="resources" className="py-24 lg:py-32 bg-card">
@@ -105,9 +108,9 @@ export async function Resources() {
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {resources.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No resources have been published yet. As you add articles,
-              podcasts, tools, and more in Strapi, they will show up here
-              automatically.
+              {strapiOn
+                ? "No resources have been published yet. As you add articles, podcasts, tools, and more in Strapi, they will show up here automatically."
+                : "No resources listed yet. Check back soon."}
             </p>
           ) : (
             resources.map((item) => {

@@ -1,7 +1,8 @@
-import Image from "next/image";
-import { CalendarDays, MapPin, Clock, ArrowRight } from "lucide-react";
+import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { isStrapiCmsEnabled } from "@/lib/cms";
+import { staticEvents } from "@/lib/static-site-content";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
@@ -84,7 +85,8 @@ async function getEvents(): Promise<EventEntry[]> {
 }
 
 export async function Events() {
-  const events = await getEvents();
+  const strapiOn = isStrapiCmsEnabled();
+  const events = strapiOn ? await getEvents() : staticEvents;
   const hasEvents = events.length > 0;
   const [...rest] = events;
 
@@ -168,8 +170,9 @@ export async function Events() {
           </div>
         ) : (
           <p className="mt-8 text-sm text-muted-foreground">
-            No upcoming events are published yet. As you add events in Strapi,
-            they will appear here automatically.
+            {strapiOn
+              ? "No upcoming events are published yet. As you add events in Strapi, they will appear here automatically."
+              : "No upcoming events listed right now. Check back soon."}
           </p>
         )}
       </div>

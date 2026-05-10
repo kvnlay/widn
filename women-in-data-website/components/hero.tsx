@@ -2,9 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+import { isStrapiCmsEnabled, resolveMediaUrl } from "@/lib/cms";
+import { staticHero } from "@/lib/static-site-content";
 
 type HeroAttributes = {
   title?: string;
@@ -19,6 +18,7 @@ type HeroAttributes = {
   };
 };
 
+/** Only called when `NEXT_PUBLIC_STRAPI_CMS=true`; otherwise `Hero` uses `staticHero`. */
 async function getHeroSection(): Promise<HeroAttributes | null> {
   try {
     const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
@@ -29,8 +29,10 @@ async function getHeroSection(): Promise<HeroAttributes | null> {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
+    const strapiUrl =
+      process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
     const res = await fetch(
-      `${STRAPI_URL}/api/hero-section?populate=backgroundImage`,
+      `${strapiUrl}/api/hero-section?populate=backgroundImage`,
       {
         next: { revalidate: 60 },
         headers,
@@ -50,18 +52,17 @@ async function getHeroSection(): Promise<HeroAttributes | null> {
 }
 
 export async function Hero() {
-  const hero = await getHeroSection();
+  const hero = isStrapiCmsEnabled() ? await getHeroSection() : null;
 
-  const title =
-    hero?.title ?? "Empowering women to lead in data, together.";
-  const description =
-    hero?.description ??
-    "Join a vibrant network of women across data, analytics, and AI. Learn, share, and grow through intentional events, mentorship, and real-world connections.";
-  const ctaText = hero?.callToActionText ?? "Join the community";
-  const ctaLink = hero?.callToActionLink ?? "#join";
-  const backgroundUrl = hero?.backgroundImage?.data?.url ?? hero?.backgroundImage?.url
-    ? `${STRAPI_URL}${hero.backgroundImage.data?.url ?? hero.backgroundImage.url}`
-    : "/images/hero.jpg";
+  const title = hero?.title ?? staticHero.title;
+  const description = hero?.description ?? staticHero.description;
+  const ctaText = hero?.callToActionText ?? staticHero.callToActionText;
+  const ctaLink = hero?.callToActionLink ?? staticHero.callToActionLink;
+  const rawBg =
+    hero?.backgroundImage?.data?.url ?? hero?.backgroundImage?.url;
+  const backgroundUrl = rawBg
+    ? resolveMediaUrl(rawBg)
+    : staticHero.backgroundImageSrc;
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">

@@ -6,9 +6,9 @@ import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { isStrapiCmsEnabled, STRAPI_URL } from "@/lib/cms";
 
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+const strapiCmsEnabled = isStrapiCmsEnabled();
 
 export function Newsletter() {
   const [email, setEmail] = useState("");
@@ -18,6 +18,7 @@ export function Newsletter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!strapiCmsEnabled) return;
     setError("");
     setLoading(true);
 
@@ -74,7 +75,15 @@ export function Newsletter() {
               member stories delivered straight to your inbox.
             </p>
 
-            {submitted ? (
+            {!strapiCmsEnabled ? (
+              <div className="mt-8 rounded-xl bg-primary-foreground/10 p-6">
+                <p className="text-base leading-relaxed text-primary-foreground">
+                  Newsletter signup through the site is paused for now. Use the
+                  Connect links in the footer to stay in touch with the
+                  community.
+                </p>
+              </div>
+            ) : submitted ? (
               <div className="mt-8 flex items-center justify-center gap-3 rounded-xl bg-primary-foreground/10 p-6">
                 <CheckCircle2 className="h-6 w-6 text-primary-foreground" />
                 <p className="text-base font-medium text-primary-foreground">
