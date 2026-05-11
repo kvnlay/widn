@@ -52,7 +52,9 @@ export function Navbar() {
             <Link href="#newsletter">Subscribe</Link>
           </Button>
           <Button size="sm" asChild>
-            <Link href="#join">Join Community</Link>
+            <Link href="https://www.linkedin.com/company/women-in-data-network/">
+              Join Community
+            </Link>
           </Button>
         </div>
 
@@ -84,7 +86,9 @@ export function Navbar() {
                 <Link href="#newsletter">Subscribe</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="#join">Join Community</Link>
+                <Link href="https://www.linkedin.com/company/women-in-data-network/">
+                  Join Community
+                </Link>
               </Button>
             </div>
           </div>

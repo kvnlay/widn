@@ -17,7 +17,10 @@ const footerLinks = {
     { label: "Templates", href: "#resources" },
   ],
   Connect: [
-    { label: "LinkedIn", href: "#" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/women-in-data-network/",
+    },
     { label: "Twitter / X", href: "#" },
     { label: "Instagram", href: "#" },
   ],

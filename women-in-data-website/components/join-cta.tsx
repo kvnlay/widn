@@ -1,4 +1,5 @@
 import { ArrowRight, Slack, MessageCircle, Globe } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const channels = [
@@ -57,9 +58,11 @@ export function JoinCTA() {
         </div>
 
         <div className="mt-12 text-center">
-          <Button size="lg" className="text-base">
-            Join Women in Data
-            <ArrowRight className="ml-2 h-4 w-4" />
+          <Button size="lg" className="text-base" asChild>
+            <Link href="https://www.linkedin.com/company/women-in-data-network/">
+              Join Women in Data
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
           <p className="mt-4 text-sm text-background/40">
             Free to join. Always will be.

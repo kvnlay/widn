@@ -5,7 +5,8 @@ export const staticHero = {
   description:
     "Join a vibrant network of women across data, analytics, and AI. Learn, share, and grow through intentional events, mentorship, and real-world connections.",
   callToActionText: "Join the community",
-  callToActionLink: "#join" as const,
+  callToActionLink:
+    "https://www.linkedin.com/company/women-in-data-network/" as const,
   backgroundImageSrc: "/images/widn_hero.webp" as const,
 };
 
@@ -29,7 +30,7 @@ export const staticEvents = [
     endDate: "2026-07-10T18:30:00.000Z",
     location: "In Person (Location TBD)",
     isOnline: false,
-    registrationUrl: "#join",
+    registrationUrl: "https://www.linkedin.com/company/women-in-data-network/",
   },
   // {
   //   id: 2,
@@ -41,7 +42,7 @@ export const staticEvents = [
   //   endDate: null,
   //   location: "Toronto, ON",
   //   isOnline: false,
-  //   registrationUrl: "#join",
+  //   registrationUrl: "https://www.linkedin.com/company/women-in-data-network/",
   // },
 ];
 
